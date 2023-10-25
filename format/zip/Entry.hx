@@ -22,31 +22,21 @@
 
 package format.zip;
 
-class Tools {
-	public static function compress(f:Entry, level:Int) {
-		if (f.compressed)
-			return;
-		// this should be optimized with a temp buffer
-		// that would discard the first two bytes
-		// (in order to prevent 2x mem usage for large files)
-		var data = format.zip.Compress.run(f.data, level);
-		f.compressed = true;
-		f.data = data.sub(2, data.length - 6);
-		f.dataSize = f.data.length;
-	}
+import haxe.ds.List;
 
-	public static function uncompress(f:Entry) {
-		if( !f.compressed )
-			return;
+enum ExtraField {
+	FUnknown(tag:Int, bytes:haxe.io.Bytes);
+	FInfoZipUnicodePath(name:String, crc:Int);
+	FUtf8;
+}
 
-		var c = new Uncompress(-15);
-		var s = haxe.io.Bytes.alloc(f.fileSize);
-		var r = c.execute(f.data,0,s,0);
-		c.close();
-		if( !r.done || r.read != f.data.length || r.write != f.fileSize )
-			throw "Invalid compressed data for "+f.fileName;
-		f.compressed = false;
-		f.dataSize = f.fileSize;
-		f.data = s;
-	}
+typedef Entry = {
+	var fileName:String;
+	var fileSize:Int;
+	var fileTime:Date;
+	var compressed:Bool;
+	var dataSize:Int;
+	var data:Null<haxe.io.Bytes>;
+	var crc32:Null<Int>;
+	var ?extraFields:List<ExtraField>;
 }

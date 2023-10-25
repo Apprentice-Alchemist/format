@@ -20,33 +20,23 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package format.zip;
+package format.zip.compress;
 
-class Tools {
-	public static function compress(f:Entry, level:Int) {
-		if (f.compressed)
-			return;
-		// this should be optimized with a temp buffer
-		// that would discard the first two bytes
-		// (in order to prevent 2x mem usage for large files)
-		var data = format.zip.Compress.run(f.data, level);
-		f.compressed = true;
-		f.data = data.sub(2, data.length - 6);
-		f.dataSize = f.data.length;
+class Compress {
+	public function new(level:Int) {
+		throw new haxe.exceptions.NotImplementedException("Not implemented for this platform");
 	}
 
-	public static function uncompress(f:Entry) {
-		if( !f.compressed )
-			return;
+	public function execute(src:haxe.io.Bytes, srcPos:Int, dst:haxe.io.Bytes, dstPos:Int):{done:Bool, read:Int, write:Int} {
+		return null;
+	}
 
-		var c = new Uncompress(-15);
-		var s = haxe.io.Bytes.alloc(f.fileSize);
-		var r = c.execute(f.data,0,s,0);
-		c.close();
-		if( !r.done || r.read != f.data.length || r.write != f.fileSize )
-			throw "Invalid compressed data for "+f.fileName;
-		f.compressed = false;
-		f.dataSize = f.fileSize;
-		f.data = s;
+	public function setFlushMode(f:FlushMode) {}
+
+	public function close() {}
+
+	public static function run(s:haxe.io.Bytes, level:Int):haxe.io.Bytes {
+		throw new haxe.exceptions.NotImplementedException("Not implemented for this platform");
+		return null;
 	}
 }

@@ -26,31 +26,4 @@
  */
 package format.zip;
 
-#if haxe3
-
-typedef ExtraField = haxe.zip.Entry.ExtraField;
-
-typedef Entry = haxe.zip.Entry;
-
-#else
-
-enum ExtraField {
-	FUnknown( tag : Int, bytes : haxe.io.Bytes );
-	FInfoZipUnicodePath( name : String, crc : haxe.Int32 );
-	FUtf8;
-}
-
-typedef Entry =  {
-	var fileName : String;
-	var fileSize : Int;
-	var fileTime : Date;
-	var compressed : Bool;
-	var dataSize : Int;
-	var data : Null<haxe.io.Bytes>;
-	var crc32 : Null<haxe.Int32>;
-	var extraFields : Null<List<ExtraField>>;
-}
-
-#end
-
 typedef Data = List<Entry>

@@ -31,7 +31,7 @@ class Inflate {
 	public static function run( bytes : haxe.io.Bytes ) {
 		#if (haxe_ver >= 3.2)
 
-		return haxe.zip.Uncompress.run(bytes);
+		return format.zip.Uncompress.run(bytes);
 
 		#else
 
@@ -46,7 +46,7 @@ class Inflate {
 		b.uncompress();
 		return haxe.io.Bytes.ofData(b);
 		#elseif ( php || nodejs )
-		return haxe.zip.Uncompress.run(bytes);
+		return format.zip.Uncompress.run(bytes);
 		#else
 		return InflateImpl.run(new haxe.io.BytesInput(bytes));
 		#end

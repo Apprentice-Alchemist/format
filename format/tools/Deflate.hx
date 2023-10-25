@@ -31,7 +31,7 @@ class Deflate {
 	public static function run( b : haxe.io.Bytes, ?level = 9 ) : haxe.io.Bytes {
 		#if (haxe_ver >= 3.2)
 
-		return haxe.zip.Compress.run(b,level);
+		return format.zip.Compress.run(b,level);
 
 		#else
 		// legacy
@@ -45,7 +45,7 @@ class Deflate {
 		#elseif cpp
 		return cpp.zip.Compress.run(b,level);
 		#elseif ( java || php || nodejs )
-		return haxe.zip.Compress.run(b,level);
+		return format.zip.Compress.run(b,level);
 		#else
 		throw "Deflate is not supported on this platform";
 		return null;
